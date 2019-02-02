@@ -16,16 +16,48 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/:type', async(req, res) => {
-  console.log(req.params.type);
-   await Product.find({type: req.params.type}, (err, products) => {
-    if (err) {
-      res.json(errResult(err));
-    } else {
-      res.json(okResult(products));
-    }
-  })
+router.get('/search', async(req, res) => {
+  const { minval, maxval, category } = req.query
+  console.log(req.query)
+  const products = await Product.find({type: category, price: {$gte: minval},
+      price: {$lte: maxval}})
+  return products !== [] 
+  ? res.json(okResult(products)) 
+  : res.json(errResult('no products'))
 })
+
+router.get('/categories', async(req, res) => {
+  const types = []
+  const products = await Product.find({})
+  products.forEach(product => {
+    if (!types.includes(product.type.toUpperCase())) {
+      console.log(product.type)
+      types.push(product.type.toUpperCase())
+    }
+  });
+  return res.json(okResult(types))
+})
+
+
+router.get('/:category', async(req, res) => {
+  console.log(req.params.category);
+  if (req.params.category === 'ALL') {
+    await Product.find({}, (err, products) => {
+      if (err) {
+        return res.json(errResult(err))
+      } else {
+        return res.json(okResult(products))
+      }
+    })
+  } else {
+    await Product.find({type: req.params.category}, (err, products) => {
+      if (err) {
+        return res.json(errResult(err));
+      } else {
+        return res.json(okResult(products));
+      }
+  })
+}})
 
 // get a specific product ( by name )
 router.get(':productName', (req, res) => {

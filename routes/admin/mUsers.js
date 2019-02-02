@@ -18,9 +18,20 @@ router.get('/', (req, res) => {
   });
 });
 
-router.delete('/:username', (req, res) => {
-  console.log(req.params.username);
-  User.deleteOne({ username: req.params.username }, (err) => {
+router.get('/allUsers', (req, res) => {
+  User.find({}, (err, users) => {
+    if (err) {
+      res.json(errResult('error with get all users function'))
+    } else if (users) {
+      const newUsers = users.map(user => ({id: user._id, firstname: user.firstname, username: user.username, email: user.email}))
+      res.json(okResult(newUsers))
+    }
+  })
+})
+
+router.delete('/:email', (req, res) => {
+  console.log(req.params.email);
+  User.deleteOne({ email: req.params.email }, (err) => {
     if (err) {
       res.json(errResult('delete user failed'));
     } else {

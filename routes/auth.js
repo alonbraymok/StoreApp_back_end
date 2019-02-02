@@ -4,27 +4,22 @@ const router = express.Router({ mergeParams: true });
 const User = require('../models/Users');
 const { userEncoder } = require('../utils/jwtHandler');
 const { errResult, okResult } = require('../utils/httpResult');
-const usernameValidator = async (username) => {
-  await User.findOne({ username }).exec((err, userExist) => {
-    if (err || userExist) {
-      return false;
-    }
-    return true;
-  });
+
+const usernameValidator = async(username) => {
+  const findUser = await User.findOne({ username })
+  return findUser !== null
 };
+
 const mailValidator = async (email) => {
-  await User.findOne({ email }).exec((err, exist) => {
-    if (err || exist) {
-      return false;
-    }
-    return true;
-  });
+  const findUser = await User.findOne({email})
+  return findUser !== null
 };
 
 
 router.post('/login', (req, res) => {
   console.log(req.body)
   const { username, password } = req.body;
+  console.log('username: ', username, 'password: ', password)
   User.findOne({ username, password }, (err, user) => {
     if (err) {
       res.json(errResult(err));
@@ -34,31 +29,34 @@ router.post('/login', (req, res) => {
       res.cookie('jwtToken',jwtToken, { maxAge: 900000, httpOnly: true })
       res.json(okResult({
         firstname, email, username, jwtToken,
-      }));
+      })); 
     } else {
       res.json(errResult('wrong input'));
     }
   });
 });
 
-router.post('/register', (req, res) => {
+router.post('/register', async(req, res) => {
   const {
-    username, password, email, isAdmin,
+    username, password, email, address, fullname
   } = req.body;
-  if (!usernameValidator(username) || !mailValidator(email)) {
-    res.json('error there');
+  const usernameValidate = await usernameValidator(username)
+  const emailValidate = await mailValidator(email)
+
+  if (usernameValidate || emailValidate) {
+    return res.json(errResult('username or email already exist'))
   } else {
     const userFields = {
       username,
       password,
       email,
-      createdat: Date.now(),
-      firstname: 'eliran eliko',
-      isAdmin,
+      address,
+      fullname,
     };
+    console.log(userFields)
     const user = new User(userFields);
     user.save();
-    res.json(okResult('register completed'));
+    res.json(okResult(user));
   }
 });
 

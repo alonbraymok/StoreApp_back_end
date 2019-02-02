@@ -7,33 +7,39 @@ const UserModel = new Schema({
         type: String,
         required: true
     },
+
     password: {
         type: String,
         required: true
     },
+
     email: {
         type: String,
         required: true
     },
-    createdat: {
-        type: Date,
-        required: true
-    },
-    firstname: {
-        type: String,
-        required: true
-    },
-    lastname: {
+
+    address: {
         type: String
     },
+
+    fullname: {
+        type: String
+    },
+
+    createdAt: {
+        type: Date,
+    },
+
     currentCart: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Product'
     },
+
     ordersHistory: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Order'
     },
+    
     isAdmin: {
         type: Boolean,
     }

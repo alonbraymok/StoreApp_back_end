@@ -9,8 +9,8 @@ const { authMiddleware } = require('../middlewares/authMiddleware');
 const router = express.Router({ mergeParams: true });
 
 router.use('/api/auth', auth); // login / register
-router.use('/api/manage', authMiddleware, adminMiddleware, manage); // for admin panel
-router.use('/api/users', users); // users area
+router.use('/api/manage', manage); // for admin panel authMiddleware, adminMiddleware are missing
+router.use('/api/users', users); // users area  authMiddleware is missing
 router.use('/api/products', products); // products area
 
 // router.use('/order', verifyUserMiddleware, order)

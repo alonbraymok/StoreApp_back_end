@@ -17,17 +17,6 @@ router.get('/currentCart', (req, res) => {
   res.json(okResult(user.currentCart));
 });
 
-router.get('/allUsers', (req, res) => {
-  User.find({}, (err, users) => {
-    if (err) {
-      res.json(errResult('error with get all users function'))
-    } else if (users) {
-      const newUsers = users.map(user => ({id: user._id, firstname: user.firstname, username: user.username, email: user.email}))
-      res.json(okResult(newUsers))
-    }
-  })
-})
-
 router.patch('/addToCart/:productId', (req, res) => {
   const { user } = req;
   if (validateProduct(req.params.productId)) {
