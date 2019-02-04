@@ -12,6 +12,7 @@ router.get('/', (req, res) => {
       res.json(errResult(err));
     } else {
       res.json(okResult(products));
+      console.log(products);
     }
   });
 });

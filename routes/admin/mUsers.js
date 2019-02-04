@@ -8,6 +8,7 @@ const { errResult, okResult } = require('../../utils/httpResult');
 router.get('/ping', (req, res) => {
   res.json(okResult('pong'));
 });
+
 router.get('/', (req, res) => {
   User.find({}, (err, users) => {
     if (err) {
@@ -24,6 +25,7 @@ router.get('/allUsers', (req, res) => {
       res.json(errResult('error with get all users function'))
     } else if (users) {
       const newUsers = users.map(user => ({id: user._id, firstname: user.firstname, username: user.username, email: user.email}))
+      debugger
       res.json(okResult(newUsers))
     }
   })
