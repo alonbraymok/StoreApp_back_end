@@ -16,7 +16,6 @@ router.get('/', (req, res) => {
     }
   });
 });
-
 router.get('/search', async(req, res) => {
   const { minval, maxval, category } = req.query
   console.log(req.query)

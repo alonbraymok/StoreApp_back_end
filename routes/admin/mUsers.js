@@ -48,6 +48,24 @@ router.post('/:email', async(req, res) => {
 
 })
 
+router.put('/:userId', async(req, res) => {
+  console.log('here')
+  console.log(req.params.userId)
+  const userMutated = req.body
+  User.update(
+    {_id: req.params.userId},
+    { $set: {
+      username: req.body.username,
+      address: req.body.address,
+      email: req.body.email,
+      password: req.body.password
+    }
+  }).then((result, err) => {
+    if (err) return res.json(errResult(err))
+    else return res.json(okResult(result))
+  })  
+})
+
 router.post('/script', async(req, res) => {
   for (let i = 0 ; i < 200 ; i ++) {
     const result = await axios.get('https://randomuser.me/api')

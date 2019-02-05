@@ -18,6 +18,25 @@ router.get('/', (req, res) => {
     });
 });
 
+router.put('/:productId', async(req, res) => {
+  console.log('here')
+  console.log(req.params.productId)
+  const productMutated = req.body
+  Product.update(
+    {_id: req.params.productId},
+    { $set: {
+      name: req.body.productName,
+      type: req.body.productType,
+      price: req.body.productPrice,
+      picture: req.body.productPicture
+    }
+  }).then((result, err) => {
+    if (err) return res.json(errResult(err))
+    else return res.json(okResult(result))
+  })  
+})
+
+
 router.post('/', async(req, res) => {
   const {productName, productType, productPrice, productPicture, productSupplier} = req.body
   const supplier = await Supplier.find({name: productSupplier})
@@ -44,18 +63,6 @@ router.get('/ping', (req, res) => {
   res.json(okResult('pong'));
 });
 
-router.put('/product', (req, res) => {
-  const { name, type, supplierName } = req.body;
-  Supplier.findOne({ name: supplierName }, (err, supplierExist) => {
-    if (err) {
-      res.json(errResult(err));
-    } else {
-      const product = new Product({ name, type, supplier: supplierExist._id });
-      product.save();
-      res.json(okResult('product added: ', product));
-    }
-  });
-});
 
 router.delete('/eliran', (req, res) => {
   console.log('here...')
