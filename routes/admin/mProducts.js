@@ -37,6 +37,8 @@ router.put('/:productId', async(req, res) => {
 })
 
 
+
+
 router.post('/', async(req, res) => {
   const {productName, productType, productPrice, productPicture, productSupplier} = req.body
   const supplier = await Supplier.find({name: productSupplier})
@@ -49,12 +51,13 @@ router.post('/', async(req, res) => {
 
 
 router.post('/script', async(req, res) => {
-  const result  = await axios.get('https://www.ybitan.co.il/v2/retailers/1131/branches/958/categories/95010/products?appId=4&categorySort=%7B%22priority%22:1,%22sortType%22:2%7D&categorySort=%7B%22priority%22:2,%22sortType%22:5%7D&from=0&languageId=1&minScore=0&names=%D7%97%D7%9C%D7%91+%D7%95%D7%9E%D7%A9%D7%A7%D7%90%D7%95%D7%AA+%D7%97%D7%9C%D7%91&names=Milk+%26+Cream&names=%D7%97%D7%9C%D7%91+%D7%95%D7%91%D7%99%D7%A6%D7%99%D7%9D&names=Dairy++%26+Eggs&size=100')
-  console.log(result.data.products[0].localName)
+  const result  = await axios.get('https://www.ybitan.co.il/v2/retailers/1131/branches/958/categories/93710/products?appId=4&categorySort=%7B%22priority%22:1,%22sortType%22:5%7D&categorySort=%7B%22priority%22:2,%22sortType%22:1%7D&from=39&languageId=1&minScore=0&names=%D7%91%D7%A9%D7%A8+%D7%A7%D7%A4%D7%95%D7%90&names=Frozen+Meat&names=%D7%A2%D7%95%D7%A3+%D7%91%D7%A9%D7%A8+%D7%95%D7%93%D7%92%D7%99%D7%9D&names=Meat,+Chicken+%26+Fish&size=100')
+  console.log(result.data.products)
+  return
   result.data.products.map(product => {
     console.log(get(product.branch, 'regularPrice', 10))
-    const name = product.localName
-    const p = new Product({ name, type: "MILKY", supplier: null, price: get(product.branch, 'regularPrice', 10)});
+    const name = get(product, 'localName')
+    const p = new Product({ name, type: "MEAT", supplier: null, price: get(product.branch, 'regularPrice', 10)});
     p.save();
   })
 })
