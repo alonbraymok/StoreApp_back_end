@@ -34,7 +34,7 @@ router.post('/script', async(req, res) => {
   console.log(result.data.products[0].localName)
   result.data.products.map(product => {
     console.log(get(product.branch, 'regularPrice', 10))
-    const name = product.localName.split("").reverse().join("")
+    const name = product.localName
     const p = new Product({ name, type: "MILKY", supplier: null, price: get(product.branch, 'regularPrice', 10)});
     p.save();
   })
@@ -56,6 +56,18 @@ router.put('/product', (req, res) => {
     }
   });
 });
+
+router.delete('/eliran', (req, res) => {
+  console.log('here...')
+  Product.deleteMany({}, (err) => {
+    if (err) {
+      res.json(errResult(err))
+    } else {
+      res.json(okResult('products deleted ....'))
+    }
+  })
+})
+
 
 router.delete('/:productId', (req, res) => {
   Product.deleteOne({ _id: req.params.productId }, (err) => {

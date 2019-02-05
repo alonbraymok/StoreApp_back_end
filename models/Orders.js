@@ -8,15 +8,14 @@ const OrderModel = new Schema({
         ref: 'User',
         required: true
     },
-    createdAt: {
-        type: Date,
-        required: true
-    },
     products: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Product',
         required: true
-    }
+    },
+    createdAt: {
+        type: Date,
+    },
 })
 
 const Order = mongoose.model('Order', OrderModel)
