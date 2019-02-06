@@ -19,8 +19,7 @@ const ProductModel = new Schema({
         type: String,
     },
     supplier: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Supplier'
+        type: String,
     }
 })
 

@@ -6,6 +6,20 @@ const Product = require('../../models/Products');
 const { errResult, okResult } = require('../../utils/httpResult');
 const Supplier = require('../../models/Suppliers');
 const get = require('lodash/get')
+
+router.post('/', async(req, res) => {
+
+  const {productName, productType, productPrice, productPicture, productSupplier} = req.body
+  console.log(req.body)
+  const newProduct = new Product({name: productName,type: productType,price: productPrice,picture: productPicture, supplier: productSupplier})
+  console.log(newProduct)
+  const result = await newProduct.save()
+  console.log(result)
+  return res.json(okResult(`${newProduct.name} saved.`))
+})
+
+
+
 router.get('/', (req, res) => {
   Product.find({})
     .populate('supplier')
@@ -28,26 +42,14 @@ router.put('/:productId', async(req, res) => {
       name: req.body.productName,
       type: req.body.productType,
       price: req.body.productPrice,
-      picture: req.body.productPicture
+      picture: req.body.productPicture,
+      supplier: req.body.productSupplier
     }
   }).then((result, err) => {
     if (err) return res.json(errResult(err))
     else return res.json(okResult(result))
   })  
 })
-
-
-
-
-router.post('/', async(req, res) => {
-  const {productName, productType, productPrice, productPicture, productSupplier} = req.body
-  const supplier = await Supplier.find({name: productSupplier})
-  if (!supplier) return res.json(errResult('supplier not exist'))
-  const newProduct = new Product(productName, productType, productPrice, productPicture, supplier)
-  newProduct.save()
-  res.json(okResult(`${newProduct.name} saved.`))
-})
-
 
 
 router.post('/script', async(req, res) => {

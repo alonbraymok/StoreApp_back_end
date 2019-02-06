@@ -89,7 +89,8 @@ router.put('/:userId', async(req, res) => {
       username: req.body.username,
       address: req.body.address,
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
+      firstname: req.body.firstname
     }
   }).then((result, err) => {
     if (err) return res.json(errResult(err))
