@@ -12,8 +12,6 @@ router.use('/products', mProducts);
 router.use('/users', mUsers);
 router.use('/suppliers', mSuppliers);
 
-<<<<<<< HEAD
-=======
 
 router.get('/allUsers', (req, res) => {
   User.find({}, (err, users) => {
@@ -27,5 +25,4 @@ router.get('/allUsers', (req, res) => {
 })
 
 
->>>>>>> 5d507670777286e09570f00f1c99a6d13d13ff7e
 module.exports = router;
