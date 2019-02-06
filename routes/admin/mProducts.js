@@ -66,6 +66,12 @@ router.get('/ping', (req, res) => {
   res.json(okResult('pong'));
 });
 
+router.get('/:productName', async(req, res) => {
+  const product = await Product.find({name: req.params.productName})
+  if (!product) return res.json(errResult('id: ' + req.params.productName + ' not exist'))
+  return res.json({okResult(product)}) 
+})
+
 
 router.delete('/eliran', (req, res) => {
   console.log('here...')

@@ -21,6 +21,23 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/allUsers', (req, res) => {
+  User.find({}, (err, users) => {
+    if (err) {
+      res.json(errResult('error with get all users function'))
+    } else if (users) {
+      const newUsers = users.map(user => ({id: user._id, firstname: user.firstname, username: user.username, email: user.email}))
+      res.json(okResult(newUsers))
+    }
+  })
+})
+
+router.get('/:userName', (req, res) => {
+  const user = await User.find({username: req.params.userName})
+  if (!user) return res.json(errResult('id: ' + req.params.userName + ' not exist'))
+  return res.json({okResult(user)}) 
+})
+
 router.post('/:email', async(req, res) => {
   const ids = req.body.map(p => p._id)
   const user = await User.find({email: req.params.email})
@@ -82,17 +99,6 @@ router.post('/script', async(req, res) => {
   }
 }
   return res.json(okResult('ok!'))
-})
-
-router.get('/allUsers', (req, res) => {
-  User.find({}, (err, users) => {
-    if (err) {
-      res.json(errResult('error with get all users function'))
-    } else if (users) {
-      const newUsers = users.map(user => ({id: user._id, firstname: user.firstname, username: user.username, email: user.email}))
-      res.json(okResult(newUsers))
-    }
-  })
 })
 
 router.delete('/:email', (req, res) => {
