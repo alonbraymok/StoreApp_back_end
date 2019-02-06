@@ -13,7 +13,7 @@ router.use('/api/auth', auth); // login / register
 router.use('/api/manage', manage); // for admin panel authMiddleware, adminMiddleware are missing
 router.use('/api/users', users); // users area  authMiddleware is missing
 router.use('/api/products', products); // products area
-router.use('/api/admin/mUser', mUsers);
+
 
 // router.use('/order', verifyUserMiddleware, order)
 // router.use('/suppliers', verifyAdminUser, suppliers)

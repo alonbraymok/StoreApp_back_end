@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 8000;
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(router);
+
 app.get('/', (req, res) => {
   // there we should deploy the 'front - end'
   console.log('request is there');

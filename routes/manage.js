@@ -12,18 +12,4 @@ router.use('/products', mProducts);
 router.use('/users', mUsers);
 router.use('/suppliers', mSuppliers);
 
-
-router.get('/allUsers', (req, res) => {
-  User.find({}, (err, users) => {
-    if (err) {
-      res.json(errResult('error with get all users function'))
-    } else if (users) {
-      const newUsers = users.map(user => ({id: user._id, firstname: user.firstname, username: user.username, email: user.email}))
-      debugger
-      res.json(okResult(newUsers))
-    }
-  })
-})
-
-
 module.exports = router;

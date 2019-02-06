@@ -28,7 +28,7 @@ router.post('/login', (req, res) => {
       const { firstname, email } = user;
       res.cookie('jwtToken',jwtToken, { maxAge: 900000, httpOnly: true })
       res.json(okResult({
-        firstname, email, username, jwtToken,
+        firstname, email, username, jwtToken, isAdmin: user.isAdmin
       })); 
     } else {
       res.json(errResult('wrong input'));

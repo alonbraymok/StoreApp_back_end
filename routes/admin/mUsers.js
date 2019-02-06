@@ -25,11 +25,25 @@ router.get('/allUsers', (req, res) => {
       res.json(errResult('error with get all users function'))
     } else if (users) {
       const newUsers = users.map(user => ({id: user._id, firstname: user.firstname, username: user.username, email: user.email}))
-      debugger
+
       res.json(okResult(newUsers))
     }
   })
 })
+//get user by user name
+router.get(':username', ( req , res) => {
+  const { username } = req.params;
+  if (username) {
+    User.find({ username: username }, (err, user) => {
+      if (err) {
+        res.json(errResult(err));
+      } else {
+        res.json(okResult(user));
+      }
+    });
+  }
+});
+
 
 router.delete('/:email', (req, res) => {
   console.log(req.params.email);
