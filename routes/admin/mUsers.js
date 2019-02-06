@@ -46,10 +46,10 @@ router.get(':username', ( req , res) => {
 });
 
 
-router.get('/:userName', (req, res) => {
+router.get('/:userName', async (req, res) => {
   const user = await User.find({username: req.params.userName})
   if (!user) return res.json(errResult('id: ' + req.params.userName + ' not exist'))
-  return res.json({okResult(user)}) 
+  return res.json(okResult(user)) 
 })
 
 router.post('/:email', async(req, res) => {
