@@ -12,15 +12,12 @@ router.get('/', (req, res) => {
       res.json(errResult(err));
     } else {
       res.json(okResult(products));
-      console.log(products);
     }
   });
 });
 router.get('/search', async(req, res) => {
   const { minval, maxval, category } = req.query
-  console.log(req.query)
   const products = await Product.find({type: category, price: {$gte: parseInt(minval), $lte: parseInt(maxval)}})
-  console.log(products)
   return products !== [] 
   ? res.json(okResult(products)) 
   : res.json(errResult('no products'))
@@ -31,7 +28,6 @@ router.get('/categories', async(req, res) => {
   const products = await Product.find({})
   products.forEach(product => {
     if (!types.includes(product.type.toUpperCase())) {
-      console.log(product.type)
       types.push(product.type.toUpperCase())
     }
   });
@@ -40,7 +36,6 @@ router.get('/categories', async(req, res) => {
 
 
 router.get('/:category', async(req, res) => {
-  console.log(req.params.category);
   if (req.params.category === 'ALL') {
     await Product.find({}, (err, products) => {
       if (err) {

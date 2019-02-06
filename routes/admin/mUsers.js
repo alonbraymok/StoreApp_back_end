@@ -31,6 +31,22 @@ router.get('/allUsers', (req, res) => {
     }
   })
 })
+
+
+router.get('/didOrders', async(req, res) => {
+  let {minVal, maxVal, nameLike} = req.query
+  minOrders = parseInt(minVal)
+  maxVal = parseInt(maxVal)
+  const users = await User.find({username: new RegExp('^'+nameLike+'$', "i")})
+  const usersFiltered = users.filter(user => {
+    if (user.ordersHistory.length >= minVal && user.ordersHistory.length <= maxVal) {
+      return user
+    }
+  })
+  return res.json(okResult(usersFiltered))
+})
+
+
 //get user by user name
 router.get(':username', ( req , res) => {
   const { username } = req.params;

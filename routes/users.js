@@ -70,9 +70,7 @@ const clearCurrentCart = (user) => {
   if (user) {
     User.update({ username: user.username }, { $set: { currentCart: [] } }, (err, affected) => {
       if (err) {
-        console.log(err);
       } else if (affected) {
-        console.log(affected);
       }
     });
   }
