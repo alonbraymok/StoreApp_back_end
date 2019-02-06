@@ -47,20 +47,24 @@ router.get('/didOrders', async(req, res) => {
   return res.json(okResult(usersFiltered))
 })
 
-router.get('/cms', async(req, res) => {
-  const query = req.body
+router.post('/cms', async(req, res) => {
+  
+  const query = req.body.char
+ 
+  
   const users = await User.find({})
   const userNames = users.map(user => user.username)
-  console.log(userNames)
+  
   var sketch = createCountMinSketch()
   userNames.forEach(username => {
     const chars = username.split('')
     chars.forEach(char => {
+      
       sketch.update(char, 1)
     })
   });
   const result = sketch.query(query)
-  console.log(result)
+  
   return res.json(okResult(result))
 })
 
