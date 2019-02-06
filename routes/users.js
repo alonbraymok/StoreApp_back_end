@@ -78,4 +78,8 @@ const clearCurrentCart = (user) => {
   }
 };
 
+router.get('/location', (req, res) => {
+  res.json(okResult('Tel Aviv'))
+})
+
 module.exports = router;

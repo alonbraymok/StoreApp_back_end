@@ -16,12 +16,11 @@ router.get('/', (req, res) => {
     }
   });
 });
-
 router.get('/search', async(req, res) => {
   const { minval, maxval, category } = req.query
   console.log(req.query)
-  const products = await Product.find({type: category, price: {$gte: minval},
-      price: {$lte: maxval}})
+  const products = await Product.find({type: category, price: {$gte: parseInt(minval), $lte: parseInt(maxval)}})
+  console.log(products)
   return products !== [] 
   ? res.json(okResult(products)) 
   : res.json(errResult('no products'))
