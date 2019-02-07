@@ -7,6 +7,7 @@ const { errResult, okResult } = require('../utils/httpResult');
 
 // get all products
 router.get('/', (req, res) => {
+  console.log('here!!!')
   Product.find({}, (err, products) => {
     if (err) {
       res.json(errResult(err));
@@ -23,12 +24,16 @@ router.get('/search', async(req, res) => {
   : res.json(errResult('no products'))
 })
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 router.get('/categories', async(req, res) => {
   const types = []
   const products = await Product.find({})
   products.forEach(product => {
-    if (!types.includes(product.type.toUpperCase())) {
-      types.push(product.type.toUpperCase())
+    if (!types.includes(product.type)) {
+      types.push(product.type)
     }
   });
   return res.json(okResult(types))
@@ -36,7 +41,7 @@ router.get('/categories', async(req, res) => {
 
 
 router.get('/:category', async(req, res) => {
-  if (req.params.category === 'ALL') {
+  if (req.params.category === 'all') {
     await Product.find({}, (err, products) => {
       if (err) {
         return res.json(errResult(err))
@@ -45,10 +50,30 @@ router.get('/:category', async(req, res) => {
       }
     })
   } else {
-    await Product.find({type: req.params.category}, (err, products) => {
+    await Product.find({type:req.params.category.toUpperCase()}, (err, products) => {
       if (err) {
         return res.json(errResult(err));
       } else {
+        return res.json(okResult(products));
+      }
+  })
+}})
+
+router.get('/categoryToChart/:category', async(req, res) => {
+  if (req.params.category === 'all') {
+    await Product.find({}, (err, products) => {
+      if (err) {
+        return res.json(errResult(err))
+      } else {
+        return res.json(okResult(products))
+      }
+    })
+  } else {
+    await Product.find({type:req.params.category}, (err, products) => {
+      if (err) {
+        return res.json(errResult(err));
+      } else {
+        console.log(req.params.category)
         return res.json(okResult(products));
       }
   })
